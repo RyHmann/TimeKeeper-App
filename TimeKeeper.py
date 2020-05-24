@@ -8,7 +8,6 @@ from PIL import ImageTk
 LARGE_FONT = ("Arial", 17)
 CLOCK_FONT = ("Bahnschrift Light Condensed", 26)
 FLAVOR_FONT = ("Helvetica", 11)
-# text.tag_config('task_entry', background="grey")
 
 
 
