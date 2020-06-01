@@ -109,7 +109,6 @@ class TopFrame_clock(tk.Frame):
 		days = hours // 24
 		weeks = days // 7
 		years = days // 365.25
-		# print("{} complete:".format(self.task))
 		return str("{}h {}m {}s".format(int(hours), int(minutes), int(seconds)))
 
 	'''
@@ -126,10 +125,10 @@ class TopFrame_entry(tk.Frame):
 		tk.Frame.__init__(self, parent)
 		self.controller = controller
 		task_label = tk.Label(self, text="I'm going to work on...", font=FLAVOR_FONT)
-		task_label.grid(row=0, column=0, padx=10, sticky = 'sw')
+		task_label.grid(row=0, column=0, sticky = 'sw')
 		self.task_entry = tk.Entry(self, textvariable=self.controller.app_data["task_name"], width=20, font=LARGE_FONT, fg="#083D77")
 		self.task_entry.insert(0, "Enter task here")
-		self.task_entry.grid(row=1, column=0, padx=10, pady=10)
+		self.task_entry.grid(row=1, column=0, padx=10, pady=10, columnspan=2)
 
 	def set_name(self):
 		self.controller.app_data["task_name"].set(self.task_name)
@@ -141,7 +140,6 @@ class TopFrame_review(tk.Frame):
 	def __init__(self, parent, controller):
 		tk.Frame.__init__(self, parent)
 		self.controller = controller
-
 		self.task_label = tk.Label(self, text='Task')
 		self.task_label.grid(row=0, column=0)
 		self.time_label = tk.Label(self, text='0h:00m:00s', font=CLOCK_FONT)
@@ -196,14 +194,11 @@ class BottomFrame_record(tk.Frame):
 	def __init__(self, parent, controller):
 		tk.Frame.__init__(self, parent)
 		self.controller = controller
-		record_button = Image.open("button_record.png")
-		record_button = record_button.resize((75,75), Image.ANTIALIAS)
-		self.record_button = ImageTk.PhotoImage(record_button)
-		record_button = tk.Button(self, image=self.record_button, border=0, command=self.start_time)
-		record_button.grid(row=0, column=0,padx=10, pady=10)
+		record_button = tk.Button(self, text='Record', command=self.start_time)
+		record_button.grid(row=0, column=0,padx=30, pady=30)
 
 	'''
-	Initiates timer and logs start_time, date
+	Initiates timer and logs start_time, date into app_data
 	'''
 	def start_time(self):
 		start_time = time.time()
@@ -212,7 +207,7 @@ class BottomFrame_record(tk.Frame):
 		self.controller.show_bottom_frame(BottomFrame_stop)
 		self.controller.show_top_frame(TopFrame_clock)
 
-		#Invokes methods located in other classes
+		#Calls method from access_top_frame class
 		outside_method_clock = self.controller.access_top_frame(TopFrame_clock)
 		outside_method_clock.update_clock()
 
@@ -297,15 +292,17 @@ class BottomFrame_review(tk.Frame):
 						}
 		return app_data_dict
 
-	# Table Creation
-	# def create_db(self):
-	# 	self.c.execute("""CREATE TABLE tasks (
-	# 	task_name text collate nocase,
-	# 	task_date text,
-	# 	start_time integer,
-	# 	end_time integer,
-	# 	elapsed_time integer
-	# 	)""")
+	'''
+	SQL Table Creation
+	def create_db(self):
+		self.c.execute("""CREATE TABLE tasks (
+		task_name text collate nocase,
+		task_date text,
+		start_time integer,
+		end_time integer,
+		elapsed_time integer
+		)""")
+	'''
 
 
 	def app_data_to_db(self, task_dict):
